@@ -1,5 +1,20 @@
 from visual import *
 
+'''
+.----------------.
+| >>> vPhysics   |
+| >>> By CKB     |
+|______A___A_____| 
+      (     )
+     (    )  )
+     [#######] 
+This package is a application of VPython, an awesome python visualization package,
+which is developed by David Scherer and others.
+
+This package is designed to automatically do all the physics simulation.
+You only need to declare the objects.
+
+'''
 
 #grav_const = 6.67E-11
 grav_const = 1.
@@ -33,6 +48,7 @@ class __BasePhysicObj(object):
 		self.scene.objects.append(self)
 
 
+		
 class GravObj(__BasePhysicObj):
 	"""docstring for GravObj"""
 
@@ -107,11 +123,12 @@ def main():
 
 	while True:
 		rate(1000)
+		###########################################
 		#indicator0.pos = Balls.objects[0].pos
-		#indicator0.axis = Balls.objects[0].acc*.1
+		#indicator0.axis = Balls.objects[0].acc
 		#print "i0 axis: ",indicator0.axis
 		#print "i1 axis: ",indicator1.axis
-
+		###########################################
 		
 		#print abs(Balls.objects[0].pos)
 		#print abs(Balls.objects[1].pos)
@@ -121,3 +138,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
+		
