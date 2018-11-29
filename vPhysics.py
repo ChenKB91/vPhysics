@@ -31,6 +31,9 @@ class PhysicScene():
 
 		self.grav_objs = list(filter(lambda obj: obj.__class__ == GravObj, self.objects))
 
+	def update_special_objs(self):
+		self.grav_objs = list(filter(lambda obj: obj.__class__ == GravObj, self.objects))
+		
 	def update(self):
 		field = ForceFieldFunction(self.grav_objs)
 		for obj in self.grav_objs:
@@ -42,11 +45,13 @@ class PhysicScene():
 
 
 class __BasePhysicObj(object):
-	def __init__(self, scene, pos=vector(0), v=vector(0),):
+	def __init__(self, scene, pos=vector(0), v=vector(0), color=(1,1,1), material=None):
 		self.scene = scene
 		self.acc = vector(0)
 		self.pos, self.v = pos, v
 		self.scene.objects.append(self)
+		self.color = color
+		self.material = material
 
 
 		
@@ -56,19 +61,22 @@ class GravObj(__BasePhysicObj):
 	def __init__(self,
 				 mass,
 				 do_gravity,  # to calculate the gravity caused by the obj
-				 scene, make_trail=False, pos=vector(0), v=vector(0)):
+				 scene, make_trail=False, pos=vector(0), v=vector(0),
+				 color=color.white, material = materials.earth):
 
 		#__BasePhysicObj.__init__()
-		super(GravObj, self).__init__(scene, pos, v)
+		super(GravObj, self).__init__(scene, pos, v, color, material)
 		
 		self.mass = mass
 		self.do_gravity = do_gravity
 
 		# add self into parent scene grav list
-		self.scene.grav_objs = list(filter(lambda obj: obj.__class__ == GravObj, self.scene.objects))
+		self.scene.update_special_objs()
+		#self.scene.grav_objs = list(filter(lambda obj: obj.__class__ == GravObj, self.scene.objects))
 
 		# appearance in vpython scene
-		self.visual = sphere(radius=self.mass**(1./3), pos = self.pos, make_trail = make_trail, retain = 10000) 
+		self.visual = sphere(radius=self.mass**(1./3), pos = self.pos, make_trail = make_trail, retain = 10000,
+		                     color = self.color, material = self.material) 
 
 
 	def OnUpdate(self, dt):
@@ -113,13 +121,12 @@ def main():
 	Balls = PhysicScene(title='Balls', dt=0.01, display = display1)
 
 	objs = []
-	GravObj(pos=vector(0.0, 0, 0), mass = 90000, v = vector(0,0,0),  do_gravity = True, scene = Balls)
+	GravObj(pos=vector(0.0, 0, 0), mass = 90000, v = vector(0,0,0),  do_gravity = True, scene = Balls, material = materials.earth)
 	GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,20,0), do_gravity = False, scene = Balls, make_trail=1)
 	GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,30,0), do_gravity = False, scene = Balls, make_trail=1)
 	GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,40,0), do_gravity = False, scene = Balls, make_trail=1)
-	esc = GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,30*sqrt(2),0), do_gravity = False, scene = Balls, make_trail=1)
-	print esc.__class__
-	print GravObj
+	#esc = GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,30*sqrt(2),0), do_gravity = False, scene = Balls, make_trail=1)
+	
 	#objs.append(GravObj(pos=vector(225, 0, 0), mass = 1, v =vector(0,20,0), do_gravity = False, scene = Balls, make_trail=1))
 	#indicator0 = arrow(pos = Balls.objects[0].pos, axis = Balls.objects[0].acc)
 
