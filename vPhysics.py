@@ -62,7 +62,7 @@ class GravObj(__BasePhysicObj):
 				 mass,
 				 do_gravity,  # to calculate the gravity caused by the obj
 				 scene, make_trail=False, pos=vector(0), v=vector(0),
-				 color=color.white, material = materials.earth):
+				 color=color.white, material = None):
 
 		#__BasePhysicObj.__init__()
 		super(GravObj, self).__init__(scene, pos, v, color, material)
@@ -75,7 +75,7 @@ class GravObj(__BasePhysicObj):
 		#self.scene.grav_objs = list(filter(lambda obj: obj.__class__ == GravObj, self.scene.objects))
 
 		# appearance in vpython scene
-		self.visual = sphere(radius=self.mass**(1./3), pos = self.pos, make_trail = make_trail, retain = 10000,
+		self.visual = sphere(radius=self.mass**(1./3), pos = self.pos, make_trail = make_trail, retain = 1000,
 		                     color = self.color, material = self.material) 
 
 
@@ -115,37 +115,3 @@ def ForceFieldFunction(grav_objs):
 	return getAcc
 
 
-def main():
-
-	display1 = display(x=0, y=0, height=500, width=500, center = (0,0,0))
-	Balls = PhysicScene(title='Balls', dt=0.01, display = display1)
-
-	objs = []
-	GravObj(pos=vector(0.0, 0, 0), mass = 90000, v = vector(0,0,0),  do_gravity = True, scene = Balls, material = materials.earth)
-	GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,20,0), do_gravity = False, scene = Balls, make_trail=1)
-	GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,30,0), do_gravity = False, scene = Balls, make_trail=1)
-	GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,40,0), do_gravity = False, scene = Balls, make_trail=1)
-	#esc = GravObj(pos=vector(100, 0, 0), mass = 10, v =vector(0,30*sqrt(2),0), do_gravity = False, scene = Balls, make_trail=1)
-	
-	#objs.append(GravObj(pos=vector(225, 0, 0), mass = 1, v =vector(0,20,0), do_gravity = False, scene = Balls, make_trail=1))
-	#indicator0 = arrow(pos = Balls.objects[0].pos, axis = Balls.objects[0].acc)
-
-
-	while True:
-		rate(1000)
-		###########################################
-		#indicator0.pos = Balls.objects[0].pos
-		#indicator0.axis = Balls.objects[0].acc
-		#print "i0 axis: ",indicator0.axis
-		#print "i1 axis: ",indicator1.axis
-		###########################################
-		
-		#print abs(Balls.objects[0].pos)
-		#print abs(Balls.objects[1].pos)
-		Balls.update()
-		#print Balls.objects[0].pos-Balls.objects[1].pos
-
-
-if __name__ == '__main__':
-	main()
-		
