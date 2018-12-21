@@ -1,3 +1,6 @@
+from visual import *
+from vPhysics import *
+
 def main():
 
 	display1 = display(x=0, y=0, height=500, width=500, center = (0,0,0))

@@ -61,7 +61,7 @@ class GravObj(__BasePhysicObj):
 	def __init__(self,
 				 mass,
 				 do_gravity,  # to calculate the gravity caused by the obj
-				 scene, make_trail=False, pos=vector(0), v=vector(0),
+				 scene, make_trail=False, pos=vector(0), v=vector(0), radius = 'auto',
 				 color=color.white, material = None):
 
 		#__BasePhysicObj.__init__()
@@ -74,8 +74,12 @@ class GravObj(__BasePhysicObj):
 		self.scene.update_special_objs()
 		#self.scene.grav_objs = list(filter(lambda obj: obj.__class__ == GravObj, self.scene.objects))
 
+		if radius == 'auto':
+			self.radius = self.mass**(1./3)
+		else:
+			self.radius = radius
 		# appearance in vpython scene
-		self.visual = sphere(radius=self.mass**(1./3), pos = self.pos, make_trail = make_trail, retain = 1000,
+		self.visual = sphere(radius=self.radius, pos = self.pos, make_trail = make_trail, retain = 1000,
 		                     color = self.color, material = self.material) 
 
 
